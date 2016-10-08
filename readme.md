@@ -13,6 +13,23 @@ Every language is under it's own name.
 - java: https://github.com/mcac0006/sift-java
 - go: https://github.com/0x19/sift-golang
 
-## Tests
+## Language Progress
 
-There are tests in each of these APIs.
+TODO(grant) Create table of language progress.
+- ruby
+- python
+- php
+- java
+- go
+
+## Build strategy
+
+1. [ ] Create a full test suite in a statically typed language (java or go).
+2. [ ] Use the statically typed language as template for other languages.
+3. [ ] Add each language incrementally.
+
+- Fork repos if necessary.
+
+## TODO
+
+See GitHub issues/milestones.
