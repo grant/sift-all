@@ -12,6 +12,7 @@ Every language is under it's own name.
 - php: https://github.com/SiftScience/sift-php
 - java: https://github.com/mcac0006/sift-java
 - go: https://github.com/0x19/sift-golang
+- javascript: https://www.npmjs.com/package/yield-siftscience
 
 ## Language Progress
 

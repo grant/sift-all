@@ -13,17 +13,20 @@ func main() {
 	api_key := string(buf)
 	sift := sift.New(api_key)
 
-	eventName := "$transaction"
+	eventName := EVENT_TRANSACTION
 
-	data := map[eventName]interface{}{
-		"$user_id":          "someone@someone.com",
-		"$transaction_id":   "1233456",
-		"$currency_code":    "USD",
-		"$amount":           15230000,
-		"$time":             1327604222,
+	Event.Transaction
+	E.Transaction
+
+	data := map[string]interface{}{
+		SIFT_USER_ID:        "someone@someone.com",
+		SIFT_TRANSACTION_ID:   "1233456",
+		SIFT_CURRENCY_CODE:    "USD",
+		SIFT_AMOUNT:           15230000,
+		SIFT_TIME:             1327604222,
 		"trip_time":         930,
 		"distance_traveled": 5.26,
-		"$order_id":         "ORDER-123124124",
+		SIFT_ORDER_ID:         "ORDER-123124124",
 	}
 
 	extras := map[string]interface{}{
