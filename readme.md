@@ -40,7 +40,7 @@ TODO(grant) Create table of language progress. Work on these in order until comp
 ### API support
 
 |language|Events|Labels|Decisions|Workflows|Score|Device Fingerprinting|Partners|
-|-|-|-|-|-|-|-|-|
+|---|---|---|---|---|---|---|---|
 |cURL| | | | | | | |
 |python| | | | | | | |
 |ruby| | | | | | | |
