@@ -37,6 +37,8 @@ TODO(grant) Create table of language progress. Work on these in order until comp
 
 # Support
 
+Currently supported features in this repo.
+
 ### API support
 
 |language|Events|Labels|Decisions|Workflows|Score|Device Fingerprinting|Partners|
@@ -51,3 +53,5 @@ TODO(grant) Create table of language progress. Work on these in order until comp
 ## TODO
 
 See GitHub issues/milestones.
+
+See improvements.md for a list of suggested improvements for Sift Science.
