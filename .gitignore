@@ -270,3 +270,4 @@ hs_err_pid*
 
 == CUSTOM GITIGNORE ==
 .idea/
+.api_key

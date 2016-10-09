@@ -1,3 +1,3 @@
-# [https://siftscience.com/developers/docs/curl/apis-overview](cURL API)
+# [https://siftscience.com/developers/docs/curl/apis-overview](curl API)
 
-cURL support for Sift Science.
+curl support for Sift Science.
