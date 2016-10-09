@@ -2,6 +2,9 @@
 
 Testing Sift Science's API in all popular languages. Some languages are supported officially by Sift Science, some arent.
 
+## Rules
+- You have to use existing APIs. You can't extend/fork APIs until you've tried them all.
+
 ## Project structure
 
 Every language is under it's own name.
@@ -16,9 +19,10 @@ Every language is under it's own name.
 
 ## Language Progress
 
-TODO(grant) Create table of language progress.
-- ruby
+TODO(grant) Create table of language progress. Work on these in order until complete
+- cURL
 - python
+- ruby
 - php
 - java
 - go
