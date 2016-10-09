@@ -41,12 +41,12 @@ TODO(grant) Create table of language progress. Work on these in order until comp
 
 |language|Events|Labels|Decisions|Workflows|Score|Device Fingerprinting|Partners|
 |---|---|---|---|---|---|---|---|
-|cURL| | | | | | | |
-|python| | | | | | | |
-|ruby| | | | | | | |
-|php| | | | | | | |
-|java| | | | | | | |
-|go| | | | | | | |
+|cURL|✖|✖|✖|✖|✖|✖|✖|
+|python|✖|✖|✖|✖|✖|✖|✖|
+|ruby|✖|✖|✖|✖|✖|✖|✖|
+|php|✖|✖|✖|✖|✖|✖|✖|
+|java|✖|✖|✖|✖|✖|✖|✖|
+|go|✖|✖|✖|✖|✖|✖|✖|
 
 ## TODO
 
