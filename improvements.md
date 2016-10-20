@@ -15,3 +15,15 @@
 - Labelling
   - Labeling doesn't show in API logs, but works.
   - Unlabel user doesn't seem to work: https://siftscience.com/developers/docs/curl/labels-api/unlabel-user
+- Why does decision status have a different auth curl command?
+  - https://siftscience.com/developers/docs/curl/decisions-api/decision-status
+  - Why does it prompt you with a password that it doesn't use?
+- The command for cURL is different per example (using quotes in URL, tabs)
+- Synchronous scoring example shouldn't isn't formatted properly (see example)
+- "Score API > Score API" is redundant and unlike other pages
+- user/account is very confusing and inconsistant in the API
+- couldn't get dicision status to work
+- device fingerprinting has a typo (colon)
+- Hardcoded account ids: (i.e. device_fingerprinting_label_a_device.sh)
+- device fingerprinting api said feature disabled (in my sift science account)
+- using a colon instead of a semicolon to terminate curl requests
