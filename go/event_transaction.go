@@ -1,23 +1,14 @@
 package main
 
 import (
-	"github.com/grant/sift-golang"
-	"io/ioutil"
+	"github.com/0x19/sift-golang"
 	"log"
 )
 
-type eventName string;
-
 func main() {
-	buf, _ := ioutil.ReadFile(".api_key")
-	api_key := string(buf)
-	sift := sift.New(api_key)
+	sift := sift.New(getAPIKey())
 
-	eventName := EVENT_TRANSACTION
-
-	Event.Transaction
-	E.Transaction
-
+	eventName := "$transaction"
 	data := map[string]interface{}{
 		SIFT_USER_ID:        "someone@someone.com",
 		SIFT_TRANSACTION_ID:   "1233456",
@@ -28,7 +19,6 @@ func main() {
 		"distance_traveled": 5.26,
 		SIFT_ORDER_ID:         "ORDER-123124124",
 	}
-
 	extras := map[string]interface{}{
 		"return_action": true,
 	}
@@ -40,3 +30,5 @@ func main() {
 
 	log.Printf("Got tracking record: %v", r)
 }
+
+
