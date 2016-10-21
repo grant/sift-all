@@ -27,3 +27,7 @@
 - Hardcoded account ids: (i.e. device_fingerprinting_label_a_device.sh)
 - device fingerprinting api said feature disabled (in my sift science account)
 - using a colon instead of a semicolon to terminate curl requests
+- I can't test the device fingerprinting or partner APIs
+
+--- Done with cURL API examples ---
+

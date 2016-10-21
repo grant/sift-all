@@ -19,12 +19,12 @@ Every language is under it's own name.
 
 ## Language Progress
 
-- cURL
-- python
-- ruby
-- php
-- java
+- cURL - DONE
+- java - IN PROGRESS
 - go
+- python
+- php
+- ruby - TRIED/UNSUCCESSFUL
 
 ## Build strategy
 
