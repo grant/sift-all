@@ -46,11 +46,11 @@ Currently supported features in this repo.
 
 |language|Events|Labels|Decisions|Workflows|Score|Device Fingerprinting|Partners|
 |---|---|---|---|---|---|---|---|
-|cURL|✖|✖|✖|✖|✖|✖|✖|
+|cURL|✓|✓|✓|✖|✓|✓|✖|
 |python|✖|✖|✖|✖|✖|✖|✖|
 |ruby|✖|✖|✖|✖|✖|✖|✖|
 |php|✖|✖|✖|✖|✖|✖|✖|
-|java|✖|✖|✖|✖|✖|✖|✖|
+|java|✓|✓|✖|✖|✓|✖|✖|
 |go|✖|✖|✖|✖|✖|✖|✖|
 
 ## TODO
