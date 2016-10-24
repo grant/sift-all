@@ -1,10 +1,8 @@
-import com.mcac0006.siftscience.SiftScienceHelper;
 import com.mcac0006.siftscience.event.domain.AddItemToCart;
 import com.mcac0006.siftscience.event.domain.CreateAccount;
 import com.mcac0006.siftscience.event.domain.CreateContent;
 import com.mcac0006.siftscience.event.domain.CreateOrder;
 import com.mcac0006.siftscience.event.domain.Custom;
-import com.mcac0006.siftscience.event.domain.Event;
 import com.mcac0006.siftscience.event.domain.LinkSessionToUser;
 import com.mcac0006.siftscience.event.domain.Login;
 import com.mcac0006.siftscience.event.domain.Logout;
@@ -13,7 +11,6 @@ import com.mcac0006.siftscience.event.domain.SendMessage;
 import com.mcac0006.siftscience.event.domain.SubmitReview;
 import com.mcac0006.siftscience.event.domain.Transaction;
 import com.mcac0006.siftscience.event.domain.UpdateAccount;
-import com.mcac0006.siftscience.result.domain.SiftScienceResponse;
 import com.mcac0006.siftscience.types.Address;
 import com.mcac0006.siftscience.types.Item;
 import com.mcac0006.siftscience.types.LoginStatus;
@@ -23,17 +20,14 @@ import com.mcac0006.siftscience.types.PaymentType;
 import com.mcac0006.siftscience.types.SocialSignOnType;
 import com.mcac0006.siftscience.types.SubmissionStatus;
 import com.mcac0006.siftscience.types.TransactionType;
-import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 /**
  * Sends real test events to Sift Science.
  */
-public class EventsTest extends TestCase {
+public class EventTest extends SiftTest {
     private static final PaymentMethod PAYMENT_METHOD = new PaymentMethod()
             .setPaymentType(PaymentType.CREDIT_CARD)
             .setPaymentGateway(PaymentGateway.BRAINTREE)
@@ -63,7 +57,7 @@ public class EventsTest extends TestCase {
             .setTags(new String[]{"Awesome", "Wintertime specials"})
             .setColor("Texas Tea")
             .setQuantity(2);
-    private static final String USER_ID = "billy_jones_301";
+    protected static final String USER_ID = "billy_jones_301";
     private static final String USER_EMAIL = "bill@gmail.com";
     private static final String SESSION_ID = "gigtleqddo84l8cm15qe4il";
     private static final String ORDER_ID = "ORDER-28168441";
@@ -102,21 +96,9 @@ public class EventsTest extends TestCase {
             .setColor("Texas Tea")
             .setQuantity(16);
     private static final String EVENT_MAKE_CALL = "make_call";
-    private final String API_KEY = new String(Files.readAllBytes(Paths.get(Utils.API_KEY_FILE)));
 
-    public EventsTest() throws IOException {
-    }
-
-    /**
-     * Asserts that the response is successful
-     *
-     * @param event The sift event
-     * @return true if the event successfully responds with a success error code.
-     */
-    private void assertEventSuccessful(Event event) {
-        event.setApiKey(API_KEY);
-        SiftScienceResponse response = SiftScienceHelper.send(event);
-        assertEquals(response.getStatus().intValue(), ErrorCodes.SUCCESS);
+    public EventTest() throws IOException {
+        super();
     }
 
     @Test
@@ -187,8 +169,7 @@ public class EventsTest extends TestCase {
         transaction.addCustomField("shipping_choice", "FedEx Ground Courier");
         transaction.addCustomField("is_first_time_buyer", false);
 
-        SiftScienceResponse response = SiftScienceHelper.send(transaction);
-        assertEquals(response.getStatus().intValue(), ErrorCodes.SUCCESS);
+        assertEventSuccessful(transaction);
     }
 
     @Test
@@ -214,8 +195,7 @@ public class EventsTest extends TestCase {
         createAccount.addCustomField(CUSTOM_EMAIL_CONFIRMED_STATUS, "$pending");
         createAccount.addCustomField(CUSTOM_PHONE_CONFIRMED_STATUS, "$pending");
 
-        SiftScienceResponse response = SiftScienceHelper.send(createAccount);
-        assertEquals(response.getStatus().intValue(), ErrorCodes.SUCCESS);
+        assertEventSuccessful(createAccount);
     }
 
     @Test
