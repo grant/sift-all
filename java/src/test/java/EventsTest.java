@@ -7,16 +7,20 @@ import com.mcac0006.siftscience.types.PaymentGateway;
 import com.mcac0006.siftscience.types.PaymentMethod;
 import com.mcac0006.siftscience.types.PaymentType;
 import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * Sends real test events to Sift Science.
+ */
 public class EventsTest extends TestCase {
-    public static final String API_KEY_FILE = "../.api_key";
 
-    public void test_create_order() throws IOException {
-        final String API_KEY = new String(Files.readAllBytes(Paths.get(API_KEY_FILE)));
+    @Test
+    public void testCreateOrder() throws IOException {
+        final String API_KEY = new String(Files.readAllBytes(Paths.get(Utils.API_KEY_FILE)));
 
         CreateOrder createOrder = new CreateOrder()
                 .setUserId("billy_jones_301")
@@ -78,7 +82,7 @@ public class EventsTest extends TestCase {
                                 .setColor("Texas Tea")
                                 .setQuantity(2)
                 }).setSellerUserId("slinkys_emporium");
-                // Unsupported:
+        // Unsupported:
 //        "$promotions":[
 //        {
 //            "$promotion_id":"FirstTimeBuyer",
@@ -92,7 +96,6 @@ public class EventsTest extends TestCase {
 //        }
 //        ],
 
-
         // these return void, so they can't be chained
         createOrder.setApiKey(API_KEY);
         createOrder.addCustomField("digital_wallet", "apple_pay");
@@ -101,5 +104,6 @@ public class EventsTest extends TestCase {
         createOrder.addCustomField("is_first_time_buyer", false);
 
         SiftScienceResponse response = SiftScienceHelper.send(createOrder);
+        assertEquals(response.getStatus().intValue(), ErrorCodes.SUCCESS);
     }
 }

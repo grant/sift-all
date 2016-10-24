@@ -5,6 +5,10 @@ Testing Sift Science's API in all popular languages. Some languages are supporte
 ## Rules
 - You have to use existing APIs. You can't extend/fork APIs until you've tried them all.
 
+## How to run
+- Put your API_KEY in a file called `.api_key` in the `sift-all` directory. No newlines.
+- Pick a language and see it's `readme.md`
+
 ## Project structure
 
 Every language is under it's own name.
