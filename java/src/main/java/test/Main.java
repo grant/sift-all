@@ -8,6 +8,6 @@ import com.mcac0006.siftscience.event.domain.AddItemToCart;
  */
 public class Main {
     public static void main(String ...args) {
-        new AddItemToCart();
+        AddItemToCart addItemToCart = new AddItemToCart();
     }
 }
