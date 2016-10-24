@@ -1,17 +1,27 @@
 import com.mcac0006.siftscience.SiftScienceHelper;
+import com.mcac0006.siftscience.event.domain.AddItemToCart;
 import com.mcac0006.siftscience.event.domain.CreateAccount;
 import com.mcac0006.siftscience.event.domain.CreateContent;
 import com.mcac0006.siftscience.event.domain.CreateOrder;
+import com.mcac0006.siftscience.event.domain.Custom;
 import com.mcac0006.siftscience.event.domain.Event;
+import com.mcac0006.siftscience.event.domain.LinkSessionToUser;
+import com.mcac0006.siftscience.event.domain.Login;
+import com.mcac0006.siftscience.event.domain.Logout;
+import com.mcac0006.siftscience.event.domain.RemoveItemFromCart;
+import com.mcac0006.siftscience.event.domain.SendMessage;
+import com.mcac0006.siftscience.event.domain.SubmitReview;
 import com.mcac0006.siftscience.event.domain.Transaction;
 import com.mcac0006.siftscience.event.domain.UpdateAccount;
 import com.mcac0006.siftscience.result.domain.SiftScienceResponse;
 import com.mcac0006.siftscience.types.Address;
 import com.mcac0006.siftscience.types.Item;
+import com.mcac0006.siftscience.types.LoginStatus;
 import com.mcac0006.siftscience.types.PaymentGateway;
 import com.mcac0006.siftscience.types.PaymentMethod;
 import com.mcac0006.siftscience.types.PaymentType;
 import com.mcac0006.siftscience.types.SocialSignOnType;
+import com.mcac0006.siftscience.types.SubmissionStatus;
 import com.mcac0006.siftscience.types.TransactionType;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -76,6 +86,22 @@ public class EventsTest extends TestCase {
     private static final String REFERRER_USER_ID = "janejane101";
     private static final String SUBJECT = "2 Bedroom Apartment for Rent";
     private static final String CONTENT = "Capitol Hill Seattle brand new condo. 2 bedrooms and 1 full bath.";
+    private static final String REVIEW_TITLE = "Title of Review Goes Here";
+    private static final String ITEM_ID = "V4C3D5R2Z6";
+    private static final Item ITEM = new Item()
+            .setItemId(ITEM_ID)
+            .setProductTitle("The Slanket Blanket-Texas Tea")
+            .setPrice(39990000L)
+            .setCurrency("USD")
+            .setUpc("67862114510011")
+            .setSku("004834GQ")
+            .setBrand("Slanket")
+            .setManufacturer("Slanket")
+            .setCategory("Blankets & Throws")
+            .setTags(new String[]{"Awesome", "Wintertime specials"})
+            .setColor("Texas Tea")
+            .setQuantity(16);
+    private static final String EVENT_MAKE_CALL = "make_call";
     private final String API_KEY = new String(Files.readAllBytes(Paths.get(Utils.API_KEY_FILE)));
 
     public EventsTest() throws IOException {
@@ -88,6 +114,7 @@ public class EventsTest extends TestCase {
      * @return true if the event successfully responds with a success error code.
      */
     private void assertEventSuccessful(Event event) {
+        event.setApiKey(API_KEY);
         SiftScienceResponse response = SiftScienceHelper.send(event);
         assertEquals(response.getStatus().intValue(), ErrorCodes.SUCCESS);
     }
@@ -126,7 +153,6 @@ public class EventsTest extends TestCase {
 //        ],
 
         // these return void, so they can't be chained
-        createOrder.setApiKey(API_KEY);
         createOrder.addCustomField("digital_wallet", "apple_pay");
         createOrder.addCustomField("coupon_code", "dollarMadness");
         createOrder.addCustomField("shipping_choice", "FedEx Ground Courier");
@@ -161,7 +187,6 @@ public class EventsTest extends TestCase {
         transaction.addCustomField("shipping_choice", "FedEx Ground Courier");
         transaction.addCustomField("is_first_time_buyer", false);
 
-        transaction.setApiKey(API_KEY);
         SiftScienceResponse response = SiftScienceHelper.send(transaction);
         assertEquals(response.getStatus().intValue(), ErrorCodes.SUCCESS);
     }
@@ -188,7 +213,6 @@ public class EventsTest extends TestCase {
         createAccount.addCustomField("referral_code", "MIKEFRIENDS");
         createAccount.addCustomField(CUSTOM_EMAIL_CONFIRMED_STATUS, "$pending");
         createAccount.addCustomField(CUSTOM_PHONE_CONFIRMED_STATUS, "$pending");
-        createAccount.setApiKey(API_KEY);
 
         SiftScienceResponse response = SiftScienceHelper.send(createAccount);
         assertEquals(response.getStatus().intValue(), ErrorCodes.SUCCESS);
@@ -211,7 +235,6 @@ public class EventsTest extends TestCase {
 
         updateAccount.addCustomField(CUSTOM_EMAIL_CONFIRMED_STATUS, "$success");
         updateAccount.addCustomField(CUSTOM_PHONE_CONFIRMED_STATUS, "$success");
-        updateAccount.setApiKey(API_KEY);
 
         assertEventSuccessful(updateAccount);
     }
@@ -233,7 +256,109 @@ public class EventsTest extends TestCase {
         // .setImageHashes
         // .setExpirationTime
         // .setStatus
-        createContent.setApiKey(API_KEY);
         assertEventSuccessful(createContent);
+    }
+
+    @Test
+    public void testUpdateContent() {
+        // Update content is not supported.
+    }
+
+    @Test
+    public void testContentStatus() {
+        // Content status is not supported.
+    }
+
+    @Test
+    public void testFlagContent() {
+        // Flag content is not supported.
+    }
+
+    @Test
+    public void testAddPromotion() {
+        // Add promotion is not supported
+    }
+
+    @Test
+    public void testAddItemToCart() {
+        AddItemToCart addItemToCart = new AddItemToCart()
+                .setUserId(USER_ID)
+                .setSessionId(SESSION_ID)
+                .setItem(ITEM);
+        assertEventSuccessful(addItemToCart);
+    }
+
+    @Test
+    public void testRemoveItemFromCart() {
+        RemoveItemFromCart removeItemFromCart = new RemoveItemFromCart()
+                .setUserId(USER_ID)
+                .setSessionId(SESSION_ID)
+                .setItem(ITEM);
+        assertEventSuccessful(removeItemFromCart);
+    }
+
+    @Test
+    public void testSubmitReview() {
+        SubmitReview submitReview = new SubmitReview()
+                .setUserId(USER_ID)
+                .setContent(CONTENT)
+                .setReviewTitle(REVIEW_TITLE)
+                .setItemId(ITEM_ID)
+                .setReviewedUserId(USER_ID)
+                .setSubmissionStatus(SubmissionStatus.SUCCESS);
+        submitReview.addCustomField("rating", "5");
+        assertEventSuccessful(submitReview);
+    }
+
+    @Test
+    public void testSendMessage() {
+        SendMessage sendMessage = new SendMessage()
+                .setUserId(USER_ID)
+                .setRecipientUserId(USER_ID)
+                .setSubject(SUBJECT)
+                .setContent(CONTENT);
+        assertEventSuccessful(sendMessage);
+    }
+
+    @Test
+    public void testLogin() {
+        Login login = new Login()
+                .setUserId(USER_ID)
+                .setSessionId(SESSION_ID)
+                .setLoginStatus(LoginStatus.SUCCESS);
+        assertEventSuccessful(login);
+    }
+
+    @Test
+    public void testLogout() {
+        Logout logout = new Logout()
+                .setUserId(USER_ID);
+        assertEventSuccessful(logout);
+    }
+
+    @Test
+    public void testLinkSessionToUser() {
+        LinkSessionToUser linkSessionToUser = new LinkSessionToUser()
+                .setUserId(USER_ID)
+                .setSessionId(SESSION_ID);
+        assertEventSuccessful(linkSessionToUser);
+    }
+
+    @Test
+    public void testChargeback() {
+        // Chargeback is not supported
+    }
+
+    @Test
+    public void testOrderStatus() {
+        // Order status is not supported
+    }
+
+    @Test
+    public void testCustom() {
+        Custom customEvent = new Custom(EVENT_MAKE_CALL);
+        customEvent.addCustomField("$user_id", USER_ID);
+        customEvent.addCustomField("recipient_user_id", "marylee819");
+        customEvent.addCustomField("call_duration", 4428);
     }
 }

@@ -35,3 +35,4 @@
 
 - Error codes are really weird.
 - Sample events are verbose, and don't exactly match each other (i.e. example properties are not all the same in each example)
+- Why does removing items from cart require so many fields. Can't you just remove using the "$item_id"?
