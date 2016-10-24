@@ -24,9 +24,9 @@ Every language is under it's own name.
 ## Language Progress
 
 - cURL - DONE
-- java - IN PROGRESS
+- java - DONE
 - go
-- python
+- python - IN PROGRESS
 - php
 - ruby - TRIED/UNSUCCESSFUL
 
