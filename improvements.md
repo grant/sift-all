@@ -30,4 +30,8 @@
 - I can't test the device fingerprinting or partner APIs
 
 --- Done with cURL API examples ---
+--- Worked a bit on Go examples ---
+--- Working on Java examples ---
 
+- Error codes are really weird.
+- Sample events are verbose, and don't exactly match each other (i.e. example properties are not all the same in each example)

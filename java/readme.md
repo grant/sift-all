@@ -2,6 +2,7 @@
 
 Java support for Sift Science.
 
-# Not working?
+# Not working
 - Some fields (like $promotions) aren't included
+- Some fields builders don't chain. (See EventsTest) 
 - It would be nice to have error codes

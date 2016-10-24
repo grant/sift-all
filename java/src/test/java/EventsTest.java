@@ -1,11 +1,18 @@
 import com.mcac0006.siftscience.SiftScienceHelper;
+import com.mcac0006.siftscience.event.domain.CreateAccount;
+import com.mcac0006.siftscience.event.domain.CreateContent;
 import com.mcac0006.siftscience.event.domain.CreateOrder;
+import com.mcac0006.siftscience.event.domain.Event;
+import com.mcac0006.siftscience.event.domain.Transaction;
+import com.mcac0006.siftscience.event.domain.UpdateAccount;
 import com.mcac0006.siftscience.result.domain.SiftScienceResponse;
 import com.mcac0006.siftscience.types.Address;
 import com.mcac0006.siftscience.types.Item;
 import com.mcac0006.siftscience.types.PaymentGateway;
 import com.mcac0006.siftscience.types.PaymentMethod;
 import com.mcac0006.siftscience.types.PaymentType;
+import com.mcac0006.siftscience.types.SocialSignOnType;
+import com.mcac0006.siftscience.types.TransactionType;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -17,71 +24,93 @@ import java.nio.file.Paths;
  * Sends real test events to Sift Science.
  */
 public class EventsTest extends TestCase {
+    private static final PaymentMethod PAYMENT_METHOD = new PaymentMethod()
+            .setPaymentType(PaymentType.CREDIT_CARD)
+            .setPaymentGateway(PaymentGateway.BRAINTREE)
+            .setCardBIN("542486")
+            .setCardLast4("4444");
+    private static final PaymentMethod[] PAYMENT_METHODS = new PaymentMethod[]{PAYMENT_METHOD};
+    private static final Item MICROWAVABLE_KETTLE_CORN_ORIGINAL_FLAVOR = new Item()
+            .setItemId("12344321")
+            .setProductTitle("Microwavable Kettle Corn: Original Flavor")
+            .setPrice(4990000L)
+            .setUpc("097564307560")
+            .setSku("03586005")
+            .setBrand("Peters Kettle Corn")
+            .setManufacturer("Peters Kettle Corn")
+            .setCategory("Food and Grocery")
+            .setTags(new String[]{"Popcorn", "Snacks", "On Sale"})
+            .setQuantity(4);
+    private static final Item THE_SLANKET_BLANKET_TEXAS_TEA = new Item()
+            .setItemId("B004834GQO")
+            .setProductTitle("The Slanket Blanket-Texas Tea")
+            .setPrice(39990000L)
+            .setUpc("67862114510011")
+            .setSku("004834GQ")
+            .setBrand("Slanket")
+            .setManufacturer("Slanket")
+            .setCategory("Blankets & Throws")
+            .setTags(new String[]{"Awesome", "Wintertime specials"})
+            .setColor("Texas Tea")
+            .setQuantity(2);
+    private static final String USER_ID = "billy_jones_301";
+    private static final String USER_EMAIL = "bill@gmail.com";
+    private static final String SESSION_ID = "gigtleqddo84l8cm15qe4il";
+    private static final String ORDER_ID = "ORDER-28168441";
+    private static final long AMOUNT = 115940000L;
+    private static final String CURRENCY_CODE = "USD";
+    private static final String SELLER_USER_ID = "slinkys_emporium";
+    private static final String CUSTOM_EMAIL_CONFIRMED_STATUS = "email_confirmed_status";
+    private static final String CUSTOM_PHONE_CONFIRMED_STATUS = "phone_confirmed_status";
+    private static final Address ADDRESS = new Address()
+            .setName("Bill Jones")
+            .setPhone("1-415-555-6041")
+            .setAddressLine1("2100 Main Street")
+            .setAddressLine2("Apt 3B")
+            .setCity("New London")
+            .setRegion("New Hampshire")
+            .setCountry("US")
+            .setZipCode("03257");
+    private static final String NAME = "Bill Jones";
+    private static final String PHONE = "1-415-555-6040";
+    private static final String REFERRER_USER_ID = "janejane101";
+    private static final String SUBJECT = "2 Bedroom Apartment for Rent";
+    private static final String CONTENT = "Capitol Hill Seattle brand new condo. 2 bedrooms and 1 full bath.";
+    private final String API_KEY = new String(Files.readAllBytes(Paths.get(Utils.API_KEY_FILE)));
+
+    public EventsTest() throws IOException {
+    }
+
+    /**
+     * Asserts that the response is successful
+     *
+     * @param event The sift event
+     * @return true if the event successfully responds with a success error code.
+     */
+    private void assertEventSuccessful(Event event) {
+        SiftScienceResponse response = SiftScienceHelper.send(event);
+        assertEquals(response.getStatus().intValue(), ErrorCodes.SUCCESS);
+    }
 
     @Test
-    public void testCreateOrder() throws IOException {
-        final String API_KEY = new String(Files.readAllBytes(Paths.get(Utils.API_KEY_FILE)));
-
+    public void testCreateOrder() {
         CreateOrder createOrder = new CreateOrder()
-                .setUserId("billy_jones_301")
-                .setSessionId("gigtleqddo84l8cm15qe4il")
-                .setOrderId("ORDER-28168441")
-                .setUserEmail("bill@gmail.com")
-                .setAmount(115940000L)
-                .setCurrencyCode("USD")
-                .setBillingAddress(new Address()
-                        .setName("Bill Jones")
-                        .setPhone("1-415-555-6041")
-                        .setAddressLine1("2100 Main Street")
-                        .setAddressLine2("Apt 3B")
-                        .setCity("New London")
-                        .setRegion("New Hampshire")
-                        .setCountry("US")
-                        .setZipCode("03257")
-                ).setPaymentMethods(new PaymentMethod[]{
-                                new PaymentMethod()
-                                        .setPaymentType(PaymentType.CREDIT_CARD)
-                                        .setPaymentGateway(PaymentGateway.BRAINTREE)
-                                        .setCardBIN("542486")
-                                        .setCardLast4("4444")
-                        }
-                ).setShippingAddress(new Address()
-                        .setName("Bill Jones")
-                        .setPhone("1-415-555-6041")
-                        .setAddressLine1("2100 Main Street")
-                        .setAddressLine2("Apt 3B")
-                        .setCity("New London")
-                        .setRegion("New Hampshire")
-                        .setCountry("US")
-                        .setZipCode("03257")
-                ).setExpeditedShipping(true)
+                .setUserId(USER_ID)
+                .setSessionId(SESSION_ID)
+                .setOrderId(ORDER_ID)
+                .setUserEmail(USER_EMAIL)
+                .setAmount(AMOUNT)
+                .setCurrencyCode(CURRENCY_CODE)
+                .setBillingAddress(ADDRESS)
+                .setPaymentMethods(new PaymentMethod[]{PAYMENT_METHOD})
+                .setShippingAddress(ADDRESS)
+                .setExpeditedShipping(true)
                 // Unsupported:
                 //.setShippingMethod(ShippingMethod.PHYSICAL)
                 .setItems(new Item[]{
-                        new Item()
-                                .setItemId("12344321")
-                                .setProductTitle("Microwavable Kettle Corn: Original Flavor")
-                                .setPrice(4990000L)
-                                .setUpc("097564307560")
-                                .setSku("03586005")
-                                .setBrand("Peters Kettle Corn")
-                                .setManufacturer("Peters Kettle Corn")
-                                .setCategory("Food and Grocery")
-                                .setTags(new String[]{"Popcorn", "Snacks", "On Sale"})
-                                .setQuantity(4),
-                        new Item()
-                                .setItemId("B004834GQO")
-                                .setProductTitle("The Slanket Blanket-Texas Tea")
-                                .setPrice(39990000L)
-                                .setUpc("67862114510011")
-                                .setSku("004834GQ")
-                                .setBrand("Slanket")
-                                .setManufacturer("Slanket")
-                                .setCategory("Blankets & Throws")
-                                .setTags(new String[]{"Awesome", "Wintertime specials"})
-                                .setColor("Texas Tea")
-                                .setQuantity(2)
-                }).setSellerUserId("slinkys_emporium");
+                        MICROWAVABLE_KETTLE_CORN_ORIGINAL_FLAVOR,
+                        THE_SLANKET_BLANKET_TEXAS_TEA
+                }).setSellerUserId(SELLER_USER_ID);
         // Unsupported:
 //        "$promotions":[
 //        {
@@ -103,7 +132,108 @@ public class EventsTest extends TestCase {
         createOrder.addCustomField("shipping_choice", "FedEx Ground Courier");
         createOrder.addCustomField("is_first_time_buyer", false);
 
-        SiftScienceResponse response = SiftScienceHelper.send(createOrder);
+        assertEventSuccessful(createOrder);
+    }
+
+    @Test
+    public void testUpdateOrder() {
+        // Update order is not supported
+    }
+
+    @Test
+    public void testTransaction() {
+        Transaction transaction = new Transaction()
+                .setUserId(USER_ID)
+                .setAmount(506790000L)
+                .setCurrencyCode("USD")
+                .setUserEmail(USER_EMAIL)
+                .setTransactionType(TransactionType.SALE)
+                .setOrderId(ORDER_ID)
+                .setTransactionId("719637215")
+                .setBillingAddress(ADDRESS)
+                .setPaymentMethod(PAYMENT_METHOD)
+                .setShippingAddress(ADDRESS)
+                .setSessionId(SESSION_ID)
+                .setSellerUserId("slinkys_emporium");
+
+        transaction.addCustomField("digital_wallet", "apple_pay");
+        transaction.addCustomField("coupon_code", "dollarMadness");
+        transaction.addCustomField("shipping_choice", "FedEx Ground Courier");
+        transaction.addCustomField("is_first_time_buyer", false);
+
+        transaction.setApiKey(API_KEY);
+        SiftScienceResponse response = SiftScienceHelper.send(transaction);
         assertEquals(response.getStatus().intValue(), ErrorCodes.SUCCESS);
+    }
+
+    @Test
+    public void testCreateAccount() {
+        CreateAccount createAccount = new CreateAccount()
+                .setUserId(USER_ID)
+                .setSessionId(SESSION_ID)
+                .setUserEmail(USER_EMAIL)
+                .setName(NAME)
+                .setPhone(PHONE)
+                .setReferrerUserId(REFERRER_USER_ID)
+                .setPaymentMethods(PAYMENT_METHODS)
+                .setBillingAddress(ADDRESS)
+                // Unsupported
+                // .setShippingAddress()
+                // .setPromotions()
+                .setSocialSignOnType(SocialSignOnType.TWITTER);
+
+        createAccount.addCustomField("twitter_handle", "billyjones");
+        createAccount.addCustomField("work_phone", "1-347-555-5921");
+        createAccount.addCustomField("location", "New London, NH");
+        createAccount.addCustomField("referral_code", "MIKEFRIENDS");
+        createAccount.addCustomField(CUSTOM_EMAIL_CONFIRMED_STATUS, "$pending");
+        createAccount.addCustomField(CUSTOM_PHONE_CONFIRMED_STATUS, "$pending");
+        createAccount.setApiKey(API_KEY);
+
+        SiftScienceResponse response = SiftScienceHelper.send(createAccount);
+        assertEquals(response.getStatus().intValue(), ErrorCodes.SUCCESS);
+    }
+
+    @Test
+    public void testUpdateAccount() {
+        UpdateAccount updateAccount = new UpdateAccount()
+                .setUserId(USER_ID)
+                .setChangedPassword(true)
+                .setUserEmail(USER_EMAIL)
+                .setName(NAME)
+                .setPhone(PHONE)
+                .setReferrerUserId(REFERRER_USER_ID)
+                .setPaymentMethods(PAYMENT_METHODS)
+                .setBillingAddress(ADDRESS)
+                // Unsupported
+                // .setShippingAddress()
+                .setSocialSignOnType(SocialSignOnType.TWITTER);
+
+        updateAccount.addCustomField(CUSTOM_EMAIL_CONFIRMED_STATUS, "$success");
+        updateAccount.addCustomField(CUSTOM_PHONE_CONFIRMED_STATUS, "$success");
+        updateAccount.setApiKey(API_KEY);
+
+        assertEventSuccessful(updateAccount);
+    }
+
+    @Test
+    public void testCreateContent() {
+        // We could send these fields as "custom fields" with dollar signs if we really needed to.
+        CreateContent createContent = new CreateContent()
+                .setUserId(USER_ID)
+                .setContactEmail(USER_EMAIL)
+                .setContactPhone(PHONE)
+                //.setContentId
+                .setSubject(SUBJECT)
+                .setContent(CONTENT);
+        // .setAmount
+        // .setCurrencyCode
+        // .setCategories
+        // .setLocations
+        // .setImageHashes
+        // .setExpirationTime
+        // .setStatus
+        createContent.setApiKey(API_KEY);
+        assertEventSuccessful(createContent);
     }
 }
